@@ -1,0 +1,172 @@
+" Vundle initialization
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" let Vundle manage Vundle, required
+Plugin 'gmarik/Vundle.vim'
+" plugin on GitHub repo
+Plugin 'tpope/vim-fugitive'
+Plugin 'scrooloose/nerdtree'
+Plugin 'ivanov/vim-ipython'
+Plugin 'ervandew/supertab'
+Plugin 'dajero/VimLab'
+Plugin 'ibbo/mlint.vim'
+Plugin 'kien/rainbow_parentheses.vim'
+Plugin 'kien/ctrlp.vim'
+Plugin 'rking/ag.vim'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-commentary'
+Plugin 'tpope/vim-abolish'
+Plugin 'godlygeek/tabular'
+Plugin 'plasticboy/vim-markdown'
+Plugin 'scrooloose/syntastic'
+"Plugin 'flazz/vim-colorschemes'
+Plugin 'chriskempson/base16-vim'
+Plugin 'twerth/ir_black'
+Plugin 'nanotech/jellybeans.vim'
+Plugin 'djjcast/mirodark'
+Plugin 'Raimondi/delimitMate'
+Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'jcf/vim-latex'
+" Plugin 'davidhalter/jedi-vim'
+" Plugin 'bling/vim-airline'
+"" plugin from http://vim-scripts.org/vim/scripts.html
+"Plugin 'L9'
+"" Git plugin not hosted on GitHub
+"Plugin 'git://git.wincent.com/command-t.git'
+"" git repos on your local machine (i.e. when working on your own plugin)
+"Plugin 'file:///home/gmarik/path/to/plugin'
+"" The sparkup vim script is in a subdirectory of this repo called vim.
+"" Pass the path to set the runtimepath properly.
+"Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+"" Avoid a name conflict with L9
+"Plugin 'user/L9', {'name': 'newL9'}
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+
+set t_Co=256
+syntax on
+colorscheme jellybeans
+
+" SET KEYMAPS
+noremap <Up> g<Up>
+noremap <Down> g<Down>
+inoremap <Up> <C-o>g<Up>
+inoremap <Down> <C-o>g<Down>
+
+set foldmethod=indent
+
+noremap <Home> g<Home>
+noremap <End> g<End>
+inoremap <Home> <C-o>g<Home>
+inoremap <End> <C-o>g<End>
+
+"noremap <C-J> <C-W><C-J>
+"noremap <C-K> <C-W><C-K>
+"noremap <C-L> <C-W><C-L>
+"noremap <C-H> <C-W><C-H>
+noremap <C-T> :NERDTreeToggle<CR>
+noremap <C-N> :noh<ENTER>
+noremap :vr :vertical resize
+nnoremap ; :
+nnoremap : ;
+
+" SET PREFERENCES
+set autoread      " auto update files when change detected
+set clipboard+=unnamed
+set grepprg=grep\ -nH\ $* "grepping abiity, whatever this means
+" hides buffers instead of closing them, so don't need to save before moving to other file
+set hidden
+set wrap          " wrap lines
+set tabstop=4     " a tab is four spaces
+set expandtab	  " tab key writes spaces
+set backspace=indent,eol,start
+                  " allow backspacing over everything in insert mode
+set autoindent    " always set autoindenting on
+set copyindent    " copy the previous indentation on autoindenting
+set number        " always show line numbers
+set shiftwidth=4  " number of spaces to use for autoindenting
+set shiftround    " use multiple of shiftwidth when indenting with '<' and '>'
+set showmatch     " set show matching parenthesis
+set ignorecase    " ignore case when searching
+set smartcase     " ignore case if search pattern is all lowercase,
+                  "    case-sensitive otherwise
+set smarttab      " insert tabs on the start of a line according to
+                  "    shiftwidth, not tabstop
+set hlsearch      " highlight search terms
+set incsearch     " show search matches as you type
+set history=1000         " remember more commands and search history
+set undolevels=1000      " use many muchos levels of undo
+set wildignore=*.swp,*.bak,*.pyc,*.class,*.c,*.so
+set title                " change the terminal's title
+set visualbell           " don't beep
+set noerrorbells         " don't beep
+"set updatetime=1000
+set nobackup "all backing up will be gitted thank you very much
+set noswapfile "no recovery after crashing.  just save you shit duder
+set clipboard=unnamed "tell vim to use the system clipboard
+set laststatus=2
+set ruler "show cursor line and column location
+
+"Let's make a status line!
+set statusline=\ %{HasPaste()}  "show whether paste is on
+set statusline+=%m%r%h  " show modified, readonly, helpfile
+set statusline+=\ \ CWD:%.30{getcwd()}
+set statusline+=\ \ \|\|\ \ %.30F  "the .30 limits to 30 chars
+set statusline+=%= "switch to right side
+set statusline+=\|\ %-3.c  "col no w at least 3 chars
+set statusline+=\ \ \-\ %-4.l  "line no w at left 4 chars
+set statusline+=\ \ %y  "file type
+set nofoldenable    " disable folding
+hi StatusLine ctermbg=235 ctermfg=240
+
+" if exists('+colorcolumn')
+"   set colorcolumn=81 ctermbg=0
+" else
+"   au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
+" endif
+
+highlight OverLength ctermbg=0 ctermfg=245 guibg=#592929  "highlight characters after 80 characters
+match OverLength /\%81v.\+/
+
+function! HasPaste()
+    if &paste
+        return 'PASTE MODE  '
+    en
+    return ''
+endfunction
+
+" ignore the following extensions in
+let NERDTreeIgnore=['\.pyc$', '\.so$', '\.c$', '\.o$', '\~$']
+
+"clear trailing whitespace on save
+" autocmd BufWritePre * :%s/\s\+$//e
+
+"tells supertab how to complete based on context
+let g:SuperTabDefaultCompletionType = "context"
+
+"vim-latex specifics
+let g:tex_flavor='latex'
+let g:Tex_DefaultTargetFormat='pdf'
+
+"mouse mode activated
+set mouse=a
+
+if has("autocmd")
+  " Highlight TODO, FIXME, NOTE, etc.
+  if v:version > 701
+    autocmd Syntax * call matchadd('Todo',  '\W\zs\(JBEDIT\|TODO\|FIXME\|CHANGED\|XXX\|BUG\|HACK\)')
+    autocmd Syntax * call matchadd('Debug', '\W\zs\(NOTE\|INFO\|IDEA\)')
+  endif
+endif
+
+:imap <C-c> <C-o>v
+:vmap <C-c> y
+:imap <C-v> <Esc>"*pi
+:nmap <C-c> v
+:nmap <C-v> "*p
